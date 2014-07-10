@@ -16,7 +16,7 @@ namespace queues
         /**
          * Depth of the SMD telemetry queue.
          */
-        const unsigned int SMD_QUEUE_DEPTH = 200;
+        const unsigned int SMD_QUEUE_DEPTH = 2000;
     }
 
 

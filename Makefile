@@ -3,11 +3,12 @@ SPRITEINCDIR:=$(SPRITEDIR)/include/SPRITE
 SPRITELIBDIR:=$(SPRITEDIR)/lib/SPRITE
 
 SRC:=tasks/Logger.cpp \
-     tasks/SMD.cpp
+     tasks/SMD.cpp \
+     artemis_if.cpp
 
 TEST_SRC:=
 
-TGT:=sprite_main
+TGT:=test_main
 TGT_TYPE:=application
 
 SP:=./
@@ -24,6 +25,7 @@ $(TGT): $(TGT).o $(OBJS)
 EXTRA_CLEAN+=$(TGT).o $(TGT).d
 
 #tasks/SMD.o: CPPFLAGS+=-DPRINT_DEBUG
+#tasks/Logger.o: CPPFLAGS+=-DPRINT_DEBUG
 
 release:
 	@echo "Enter version number: "; \
