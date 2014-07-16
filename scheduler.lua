@@ -1,4 +1,11 @@
 --------------------------------------------------------------------------------
+-- Load modules
+--------------------------------------------------------------------------------
+
+local bit = require("bit")
+
+
+--------------------------------------------------------------------------------
 -- Define some common functions.
 --------------------------------------------------------------------------------
 
@@ -7,11 +14,13 @@ function HZ_to_period(hz)
     return 1/hz
 end
 
+
 --------------------------------------------------------------------------------
 -- Set some constants.
 --------------------------------------------------------------------------------
 
 FASTEST_PERIOD = HZ_to_period(FASTEST_RATE)
+
 
 --------------------------------------------------------------------------------
 -- Create the scheduler
@@ -29,9 +38,9 @@ end
 --------------------------------------------------------------------------------
 -- Set task properties.
 --------------------------------------------------------------------------------
-function set_task_properties(task, tp, period, priority)
+function set_task_properties(task, tp, period, priority, presence)
     tp:set_period(period)
     tp:set_prio(priority)
-    priority = priority - 1
+    tp:set_schedule_presence(presence or bit.bnot(0))
     task:set_properties(tp)
 end

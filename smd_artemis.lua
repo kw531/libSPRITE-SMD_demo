@@ -47,9 +47,6 @@ function init()
     scheduler:start()
     logger:start()
     smd:start()
-
-    -- Give everything time to get initialized.
-    os.execute("sleep " .. tonumber(2))
 end
 
 
@@ -65,6 +62,7 @@ function terminate()
     -- Let the logger run until it has had time to flush all data.
     os.execute("sleep " .. tonumber(2))
     logger:stop()
+    scheduler:stop()
 end
 
 

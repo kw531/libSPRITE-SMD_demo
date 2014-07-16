@@ -33,15 +33,9 @@ int fsw_init(const char* const script)
 int fsw_execute()
 {
     SRTX::Scheduler& sched = SRTX::Scheduler::get_instance();
-    SCALE::Scale_if& scale = SCALE::Scale_if::get_instance();
 
-    /* Call the Lua init code.
+    /* Trigger the scheduler to run once.
      */
-    lua_State* L = scale.state();
-    //luaL_dofile(L, script);
-    lua_getfield(L, LUA_GLOBALSINDEX, "hello");
-    lua_call(L, 0, 0);
-
     sched.lock();
     sched.trigger();
     sched.unlock();
