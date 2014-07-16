@@ -87,7 +87,7 @@ namespace task
         */
         telem::SMD_msg_t& msg = m_smd_telem->content;
 
-        DPRINTF("%g,%g,%g,%g\n", double(time), double(msg.position),
+        IPRINTF("%g,%g,%g,%g\n", double(time), double(msg.position),
                 double(msg.velocity), double(msg.acceleration));
 
         /* Do the math.
