@@ -21,8 +21,7 @@ priority = tp:MAX_USER_TASK_PRIO()
 
 -- Create the scheduler.
 SCHEDULER_PERIOD = s.HZ_to_period(10)
-scheduler = s.create(tp, SCHEDULER_PERIOD, priority)
-priority = priority - 1
+scheduler = s.create(tp, SCHEDULER_PERIOD)
 
 -- Create task that manages the SMD serial port.
 smd = SMD.new("SMD", k, B, mass)
@@ -53,10 +52,11 @@ debug:debug()
 --------------------------------------------------------------------------------
 
 print "...Exiting"
+
+-- Halt the task
 smd:stop()
 
--- Let the Logger run until its had time to flush all of the data.
-os.execute("sleep 2")
-
+-- Let the logger run until it has had time to flush all data.
+os.execute("sleep " .. tonumber(2))
 logger:stop()
 scheduler:stop()
