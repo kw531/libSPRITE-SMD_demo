@@ -15,14 +15,13 @@ LOGFILE = "./smd.csv"
 -- Start programming
 --------------------------------------------------------------------------------
 
+-- Create the scheduler.
+SCHEDULER_PERIOD = s.HZ_to_period(10)
+scheduler = s.create(tp, SCHEDULER_PERIOD)
+
 -- Create task properties and set an initial priority.
 tp = Task_properties.new()
 priority = tp:MAX_USER_TASK_PRIO()
-
--- Create the scheduler.
-SCHEDULER_PERIOD = s.HZ_to_period(10)
-scheduler = s.create(tp, SCHEDULER_PERIOD, priority)
-priority = priority - 1
 
 -- Create task that manages the SMD serial port.
 smd = SMD.new("SMD", k, B, mass)
