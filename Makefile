@@ -25,6 +25,7 @@ $(TGT): $(TGT).o $(OBJS)
 EXTRA_CLEAN+=$(TGT).o $(TGT).d
 
 #tasks/SMD.o: CPPFLAGS+=-DPRINT_DEBUG
+#artemis_if.o: CPPFLAGS+=-DPRINT_DEBUG
 #tasks/Logger.o: CPPFLAGS+=-DPRINT_DEBUG
 
 release:
