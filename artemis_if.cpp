@@ -1,4 +1,5 @@
 #include "SRTX/Scheduler.h"
+#include "SRTX/RTC.h"
 #include "SCALE/Scale_if.h"
 #include "tasks/Logger_lua.h"
 #include "tasks/SMD_lua.h"
@@ -7,12 +8,7 @@
 
 int fsw_init(const char* const script)
 {
-    SRTX::Scheduler& sched = SRTX::Scheduler::get_instance();
     SCALE::Scale_if& scale = SCALE::Scale_if::get_instance();
-
-    /* Set the scheduler to be trigger by an external timing source.
-     */
-    sched.use_external_trigger(true);
 
     /* Register my tasks with with the Lua executive.
      */
@@ -34,11 +30,12 @@ int fsw_execute()
 {
     SRTX::Scheduler& sched = SRTX::Scheduler::get_instance();
 
-    /* Trigger the scheduler to run once.
-     */
-    sched.lock();
-    sched.trigger();
-    sched.unlock();
+    DPRINTF("Release the scheduler\n");
+    if(false == sched.trigger())
+    {
+        EPRINTF("Failed sched.trigger()\n");
+        return -1;
+    }
 
     return 0;
 }

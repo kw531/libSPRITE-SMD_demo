@@ -19,17 +19,19 @@ LOGFILE = "./smd.csv"
 -- Init function
 --------------------------------------------------------------------------------
 function init()
-    print "Creating tasks"
+
     -- Create task properties and set an initial priority.
     tp = Task_properties.new()
-    priority = tp:MAX_USER_TASK_PRIO()
 
     -- Create the scheduler.
     SCHEDULER_PERIOD = s.HZ_to_period(10)
-    scheduler = s.create(tp, SCHEDULER_PERIOD, priority)
-    priority = priority - 1
+    scheduler = s.create(tp, SCHEDULER_PERIOD)
+    scheduler:use_external_trigger(true)
 
-    -- Create task that manages the SMD serial port.
+    print "Creating tasks"
+    priority = tp:MAX_USER_TASK_PRIO()
+
+    -- Create task calculates a spring-mass-damper system..
     smd = SMD.new("SMD", k, B, mass)
     s.set_task_properties(smd, tp, SCHEDULER_PERIOD, priority)
     priority = priority - 1
@@ -57,6 +59,8 @@ function terminate()
     smd:stop()
 
     -- Let the logger run until it has had time to flush all data.
+    --scheduler:use_external_trigger(false)
+    --scheduler:trigger()
     os.execute("sleep " .. tonumber(2))
     logger:stop()
     scheduler:stop()
