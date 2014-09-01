@@ -1,4 +1,3 @@
-
 #include "Logger.h"
 #include "queues/SMD_queue.h"
 #include "base/XPRINTF.h"
@@ -18,11 +17,15 @@ namespace task
             {
                 EPRINTF("Error reading data from SMD queue\n");
             }
-            fprintf(fp, "%g,%g,%g,%g\n",
-                    double(smd_msg.time),
-                    double(smd_msg.position),
-                    double(smd_msg.velocity),
-                    double(smd_msg.acceleration));
+
+            if(fp)
+            {
+                fprintf(fp, "%g,%g,%g,%g\n",
+                        double(smd_msg.time),
+                        double(smd_msg.position),
+                        double(smd_msg.velocity),
+                        double(smd_msg.acceleration));
+            }
         }
 
         return true;
@@ -39,7 +42,7 @@ namespace task
 
     bool Logger::init()
     {
-        if (NULL == (m_ofp = fopen(m_filename, "wb+")))
+        if(NULL == (m_ofp = fopen(m_filename, "w")))
         {
             EPRINTF("Error opening log file: %s\n", m_filename);
             return false;
@@ -61,11 +64,19 @@ namespace task
 
     void Logger::terminate()
     {
+        DPRINTF("Terminating logger\n");
+
         /* Pull any remaining stuff from the log queues and write it before
          * closing the log file.
          */
-        log_stuff(m_ofp);
-        fclose(m_ofp);
+        if(m_ofp)
+        {
+            log_stuff(m_ofp);
+            fclose(m_ofp);
+            m_ofp = NULL;
+        }
+
+        DPRINTF("Logger terminated\n");
     }
 
 } // namespace
