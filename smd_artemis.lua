@@ -60,8 +60,6 @@ function terminate()
 
     -- Let the logger run until it has had time to flush all data.
     --scheduler:use_external_trigger(false)
-    --scheduler:trigger()
-    os.execute("sleep " .. tonumber(2))
     logger:stop()
     scheduler:stop()
 end
