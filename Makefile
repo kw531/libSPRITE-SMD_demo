@@ -1,6 +1,7 @@
 SPRITEDIR:=/usr/local
 SPRITEINCDIR:=$(SPRITEDIR)/include/SPRITE
 SPRITELIBDIR:=$(SPRITEDIR)/lib/SPRITE
+LUADIR:=/usr/include/lua5.2/
 
 SRC:=tasks/Logger.cpp \
      tasks/SMD.cpp
@@ -11,12 +12,12 @@ TGT:=sprite_main
 TGT_TYPE:=application
 
 SP:=./
-CFLAGS=-I./ -I$(SPRITEINCDIR) -DXPRINT_LOCATION #-DPRINT_DEBUG
+CFLAGS=-I./ -I$(SPRITEINCDIR) -I$(LUADIR) -DXPRINT_LOCATION #-DPRINT_DEBUG
 
 include $(SP)rules.mk
 
 LDFLAGS+=-L$(SPRITELIBDIR) -lSPRITE_SCALE -lSPRITE_SRTX -lSPRITE_math \
-         -lSPRITE_units -lpthread -llua -lrt -ldl
+         -lSPRITE_units -lpthread -llua5.2 -lrt -ldl
 
 $(TGT): $(TGT).o $(OBJS)
 	$(CPP) -o $@ $^ $(LDFLAGS)
