@@ -11,14 +11,6 @@
 namespace telem
 {
 
-    namespace
-    {
-        /**
-         * Maximum size of a SMD telemetry message.
-         */
-        const unsigned int SMD_MSG_SIZE = 128;
-    }
-
     /**
      * This is the SMD telemetry message type.
      */
