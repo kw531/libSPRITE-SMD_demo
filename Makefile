@@ -24,7 +24,7 @@ $(TGT): $(TGT).o $(OBJS)
 
 EXTRA_CLEAN+=$(TGT).o $(TGT).d
 
-#tasks/SMD.o: CPPFLAGS+=-DPRINT_DEBUG
+tasks/SMD.o: CPPFLAGS+=-DPRINT_DEBUG
 
 release:
 	@echo "Enter version number: "; \

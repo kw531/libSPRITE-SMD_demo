@@ -1,25 +1,72 @@
-#include "SCALE/Scale_if.h"
-#include "tasks/Logger_lua.h"
-#include "tasks/SMD_lua.h"
-#include "base/XPRINTF.h"
+#include <SRTX/Scheduler.h>
+#include <base/XPRINTF.h>
+#include <signal.h>
 
+#include "tasks/Logger.h"
+#include "tasks/SMD.h"
 
-int main(int arc, char* argv[])
+static volatile bool done(false);
+
+static void kill_me_now(int)
 {
-    SCALE::Scale_if& scale = SCALE::Scale_if::get_instance();
+    done = true;
+}
 
-    /* Register my tasks with with the Lua executive.
-     */
-    task::Logger_lua::register_class(scale.state());
-    task::SMD_lua::register_class(scale.state());
+static units::Nanoseconds HZ_to_period(unsigned int hz)
+{
+    return units::Nanoseconds(1*units::SEC / hz);
+}
 
-    /* Execute the main script that drives the simulation.
+int main(int arc, char *argv[])
+{
+    /* Define the constants.
      */
-    if(false == scale.run_script(argv[1]))
+    double k = 0.1;         // Spring constant
+    double B = 0.25;        // Damper constant
+    units::Grams mass(1.0); // in grams.
+    const char *LOGFILE = "./smd.csv";
+
+    /* Set up the signal handler.
+     */
+    signal(SIGINT, kill_me_now);
+
+    /* Declare the task properties.
+     */
+    SRTX::Task_properties tp;
+    SRTX::priority_t priority = SRTX::MAX_PRIO;
+
+    /* Create the scheduler
+     */
+    tp.prio = priority;
+    tp.period = HZ_to_period(10);
+    SRTX::Scheduler &s = SRTX::Scheduler::get_instance();
+    s.set_properties(tp);
+
+    /* Create the SMD task
+     */
+    --tp.prio;
+    task::SMD smd("SMD", k, B, mass);
+    smd.set_properties(tp);
+
+    /* Create the logger task
+     */
+    --tp.prio;
+    tp.period = HZ_to_period(1);
+    task::Logger logger("Logger", LOGFILE);
+    logger.set_properties(tp);
+
+    s.start();
+    logger.start();
+    smd.start();
+
+    while(!done)
     {
-        EPRINTF("Failed executing script: %s\n", argv[1]);
-        return -1;
+        ;
     }
+
+    smd.stop();
+    logger.stop();
+    s.stop();
 
     return 0;
 }
