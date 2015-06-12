@@ -47,9 +47,9 @@ namespace task
              */
             static int register_class(lua_State* L)
             {
-                SCALE::luaW_register<Logger>(L, "Logger", NULL, methods,
+                luaW_register<Logger>(L, "Logger", NULL, methods,
                         allocator);
-                SCALE::luaW_extend<Logger, SRTX::Task>(L);
+                luaW_extend<Logger, SRTX::Task>(L);
                 return 0;
             }
 

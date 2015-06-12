@@ -48,8 +48,8 @@ namespace task
              */
             static int register_class(lua_State* L)
             {
-                SCALE::luaW_register<SMD>(L, "SMD", NULL, methods, allocator);
-                SCALE::luaW_extend<SMD, SRTX::Task>(L);
+                luaW_register<SMD>(L, "SMD", NULL, methods, allocator);
+               luaW_extend<SMD, SRTX::Task>(L);
                 return 0;
             }
 
