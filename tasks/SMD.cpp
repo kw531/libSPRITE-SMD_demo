@@ -107,6 +107,10 @@ namespace task
         */
         msg.source_id = telem::TELEM_ID_SMD;
 
+	/* Put will publish the data 
+	*/
+	m_smd_telem->put();
+
         /* Put the data in the queue for the logger.
         */
         if(false == smd_q.write(msg))

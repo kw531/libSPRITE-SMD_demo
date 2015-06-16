@@ -4,7 +4,8 @@ SPRITELIBDIR:=$(SPRITEDIR)/lib/SPRITE
 LUADIR:=/usr/include/lua5.2/
 
 SRC:=tasks/Logger.cpp \
-     tasks/SMD.cpp
+     tasks/SMD.cpp 	\
+     tasks/Feeder.cpp
 
 TEST_SRC:=
 
