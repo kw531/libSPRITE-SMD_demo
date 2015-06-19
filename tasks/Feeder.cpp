@@ -21,6 +21,7 @@ namespace task
     {
         m_smd_telem = new SRTX::Subscription<telem::SMD_msg_t>
             (topics::smd_topic, get_period());
+
         if((NULL == m_smd_telem) || (false == m_smd_telem->is_valid()))
         {
             EPRINTF("Error creating SMD subscription\n");
