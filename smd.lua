@@ -10,7 +10,8 @@ B = 0.25 -- Damper constant
 mass = 1.0 -- in grams.
 
 LOGFILE = "./smd.csv"
-
+print "Apply and external force? 0 for none. Postive pulls, negative pushes."
+force_in=io.read()
 --------------------------------------------------------------------------------
 -- Initialize everything
 --------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ SCHEDULER_PERIOD = s.HZ_to_period(10)
 scheduler = s.create(tp, SCHEDULER_PERIOD)
 
 -- Create task that manages the SMD serial port.
-smd = SMD.new("SMD", k, B, mass)
+smd = SMD.new("SMD", k, B, mass, force_in)
 s.set_task_properties(smd, tp, SCHEDULER_PERIOD, priority)
 priority = priority - 1
 

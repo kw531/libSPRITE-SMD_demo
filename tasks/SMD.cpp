@@ -20,12 +20,14 @@ namespace task
      * @param dt Integration timestep.
      */
     static void smd_step(telem::SMD_msg_t& smd_data, const double B,
-            const double k, const units::Grams m, const units::Seconds dt)
+            const double k, const units::Grams m, const double force_in, const units::Seconds dt)
     {
+	double accel_comp = (force_in/m);
         /* Calculate the acceleration.
          */
-        smd_data.acceleration = units::Meterspersecondpersecond(
-                (-B * double(smd_data.velocity) - k * double(smd_data.position)) / m);
+        smd_data.acceleration = units::Meterspersecondpersecond((
+                (-B * double(smd_data.velocity) - k * double(smd_data.position)) / m)+accel_comp);
+	accel_comp=0;
 
         /* Integrate acceleration to get velocity.
          */
@@ -40,12 +42,13 @@ namespace task
 
 
     SMD::SMD(const char* const name, const double spring_constant,
-            const double damper_constant, units::Grams mass) :
+            const double damper_constant, units::Grams mass, const double force_in) :
         SRTX::Task(name),
         m_smd_telem(NULL),
         m_k(spring_constant),
         m_B(damper_constant),
-        m_mass(mass)
+        m_mass(mass),
+	m_force(force_in)
     {
     }
 
@@ -92,7 +95,7 @@ namespace task
 
         /* Do the math.
          */
-        smd_step(msg, m_B, m_k, m_mass, dt);
+        smd_step(msg, m_B, m_k, m_mass, m_force, dt);
 
         /* Increment time.
          */

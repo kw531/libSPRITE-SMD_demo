@@ -39,7 +39,7 @@ namespace task
              * @param mass Mass (m)
              */
             SMD(const char* const name, const double spring_constant,
-            const double damper_constant, units::Grams mass);
+            const double damper_constant, units::Grams mass, const double force_in);
 
             /**
              * Initialization routine.
@@ -81,6 +81,11 @@ namespace task
              * Mass.
              */
             units::Grams m_mass;
+	
+	   /**
+	    * Force input from user
+	    */
+	   double m_force;
     };
 
 } // namespace
